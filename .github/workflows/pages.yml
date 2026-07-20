@@ -1,0 +1,46 @@
+name: Deploy private Pages artifact
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout private deployment source
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.PRIVATE_SOURCE_REPOSITORY }}
+          ref: archive/df-public-deploy
+          token: ${{ secrets.PRIVATE_SOURCE_TOKEN }}
+          path: source
+
+      - name: Prepare Pages artifact
+        run: |
+          mkdir dist
+          rsync -a --exclude='.git' source/ dist/
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+      - name: Deploy Pages artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
