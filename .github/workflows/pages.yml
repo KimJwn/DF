@@ -1,4 +1,5 @@
 name: Deploy private Pages artifact
+# The deployable site is read from the private archive/df-public-deploy branch.
 
 on:
   workflow_dispatch:
