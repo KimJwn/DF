@@ -18,7 +18,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -38,7 +38,7 @@ jobs:
 
       - name: Prepare Pages artifact
         run: |
-          mkdir dist
+          mkdir -p dist
           rsync -a --exclude='.git' source/ dist/
 
       - name: Configure Pages
@@ -60,9 +60,11 @@ jobs:
 
           root_path = re.compile(r'(?P<prefix>["\'`=(])/(?P<root>deepfake-policy|api-static)/')
           changed = 0
+
           for path in Path("dist").rglob("*"):
               if not path.is_file() or path.suffix.lower() not in {".html", ".js", ".css"}:
                   continue
+
               source = path.read_text(encoding="utf-8")
               rewritten = root_path.sub(
                   lambda match: (
@@ -70,6 +72,7 @@ jobs:
                   ),
                   source,
               )
+
               if rewritten != source:
                   path.write_text(rewritten, encoding="utf-8")
                   changed += 1
