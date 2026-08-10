@@ -8,8 +8,8 @@ on:
       - main
     paths:
       - .github/workflows/pages.yml
-  schedule:
-    - cron: "17 * * * *"
+  # schedule:
+  #   - cron: "17 * * * *"
 
 permissions:
   contents: read
