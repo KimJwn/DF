@@ -1,5 +1,6 @@
 name: Deploy private Pages artifact
-# The site is read from private archive/df-public-deploy; no policy data is stored here.
+# Deployment source revision: 3187428 (archive/df-public-deploy).
+# The site is read from the private deployment branch; no policy data is stored here.
 
 on:
   workflow_dispatch:
