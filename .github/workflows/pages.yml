@@ -1,5 +1,5 @@
 name: Deploy private Pages artifact
-# Deployment source revision: 48e1c6f (archive/df-public-deploy).
+# Deployment source revision: 360895e (archive/df-public-deploy).
 # The site is read from the private deployment branch; no policy data is stored here.
 
 on:
